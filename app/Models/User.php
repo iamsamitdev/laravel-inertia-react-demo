@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'position',
+        'avatar',
+        'is_team',
+        'bio',
     ];
 
     /**
@@ -43,6 +47,35 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_team' => 'boolean',
         ];
+    }
+    
+    /**
+     * ดึงเฉพาะผู้ใช้ที่เป็นสมาชิกทีม
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeTeamMembers($query)
+    {
+        return $query->where('is_team', true);
+    }
+    
+    /**
+     * รูปโปรไฟล์พร้อม URL เต็ม
+     * 
+     * @return string
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if (!$this->avatar) {
+            return null;
+        }
+        
+        if (str_starts_with($this->avatar, 'http')) {
+            return $this->avatar;
+        }
+        
+        return asset('storage/' . $this->avatar);
     }
 }

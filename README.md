@@ -64,3 +64,117 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Laravel Inertia React Application
+
+โปรเจ็กต์นี้สร้างด้วย Laravel, Inertia.js และ React ซึ่งเป็นเทคโนโลยีที่ทันสมัยและมีประสิทธิภาพสูง
+
+## การติดตั้ง
+
+```bash
+# ติดตั้ง dependencies
+composer install
+npm install
+
+# สร้างไฟล์ .env
+cp .env.example .env
+
+# สร้าง application key
+php artisan key:generate
+
+# ทำการ migration และ seed ข้อมูล
+php artisan migrate --seed
+
+# หรือใช้คำสั่งนี้เพื่อรีเซ็ตและสร้างข้อมูลใหม่
+php artisan app:reset-test-data
+
+# รัน development server
+npm run dev
+php artisan serve
+```
+
+## ข้อมูลทดสอบ
+
+โปรเจ็กต์นี้มาพร้อมกับข้อมูลทดสอบที่สร้างโดย Seeder ซึ่งประกอบด้วย:
+
+- ผู้ใช้ทั้งหมด 10 คน
+  - สมาชิกทีม 5 คน (มี flag `is_team` เป็น `true`)
+  - ผู้ใช้ทั่วไป 5 คน
+
+### บัญชีทดสอบ
+
+สามารถใช้บัญชีต่อไปนี้ในการเข้าสู่ระบบ:
+
+- **แอดมิน**
+  - Email: admin@example.com
+  - Password: password
+
+- **สมาชิกทีม**
+  - Email: somchai@example.com, somying@example.com, mana@example.com, wipa@example.com
+  - Password: password (สำหรับทุกบัญชี)
+
+- **ผู้ใช้ทั่วไป**
+  - Email: prasert@example.com, malee@example.com, somsak@example.com, nipa@example.com, prateep@example.com
+  - Password: password (สำหรับทุกบัญชี)
+
+## คำสั่ง Artisan
+
+โปรเจ็กต์นี้มีคำสั่ง Artisan ที่สร้างขึ้นเพื่อช่วยให้การพัฒนาเป็นไปอย่างสะดวกยิ่งขึ้น:
+
+- `php artisan app:reset-test-data` - รีเซ็ตฐานข้อมูลและสร้างข้อมูลทดสอบใหม่ทั้งหมด
+
+## โครงสร้างของโปรเจ็กต์
+
+- **Laravel Backend**
+  - Controllers อยู่ที่ `app/Http/Controllers`
+  - Models อยู่ที่ `app/Models`
+  - Migrations อยู่ที่ `database/migrations`
+  - Seeders อยู่ที่ `database/seeders`
+
+- **React Frontend (Inertia.js)**
+  - Components อยู่ที่ `resources/js/components`
+  - Layouts อยู่ที่ `resources/js/layouts`
+  - Pages อยู่ที่ `resources/js/pages`
+
+## การใช้งาน API Resources
+
+ตัวอย่างการใช้งาน API Resources เพื่อส่งข้อมูลจาก Laravel ไปยัง React:
+
+```php
+// ใช้ UserResource สำหรับทีมงาน
+$teamMembers = UserResource::collection(
+    User::teamMembers()
+        ->select('id', 'name', 'position', 'avatar', 'bio')
+        ->take(4)
+        ->get()
+);
+
+// ส่งข้อมูลไปยัง about.tsx component
+return Inertia::render('about', [
+    'companyInfo' => $companyInfo,
+    'teamMembers' => $teamMembers,
+    'lastUpdated' => now()->format('d/m/Y'),
+]);
+```
+
+และใน React Component สามารถรับข้อมูลได้ดังนี้:
+
+```tsx
+interface TeamMember {
+  id: number
+  name: string
+  position: string
+  avatar: string
+  bio: string | null
+}
+
+interface AboutProps {
+  companyInfo: CompanyInfo
+  teamMembers: TeamMember[]
+  lastUpdated: string
+}
+
+export default function About({ companyInfo, teamMembers, lastUpdated }: AboutProps) {
+  // ใช้งานข้อมูลตามที่ต้องการ
+}
+```

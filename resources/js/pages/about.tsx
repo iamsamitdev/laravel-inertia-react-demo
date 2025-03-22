@@ -2,7 +2,36 @@ import React from 'react'
 import { Link } from '@inertiajs/react'
 import MainLayout from '../layouts/MainLayout'
 
-export default function About() {
+// กำหนด interfaces สำหรับ props ที่รับมาจาก Controller
+interface CompanyContact {
+  email: string
+  phone: string
+  address: string
+}
+
+interface CompanyInfo {
+  name: string
+  established: string
+  employees: number
+  location: string
+  contact: CompanyContact
+}
+
+interface TeamMember {
+  id: number
+  name: string
+  position: string
+  avatar: string
+  bio: string | null
+}
+
+interface AboutProps {
+  companyInfo: CompanyInfo
+  teamMembers: TeamMember[]
+  lastUpdated: string
+}
+
+export default function About({ companyInfo, teamMembers, lastUpdated }: AboutProps) {
   return (
     <MainLayout title="เกี่ยวกับเรา">
       <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 py-16 px-4">
@@ -36,7 +65,7 @@ export default function About() {
                   <span className="text-purple-600 text-2xl mr-2">✨</span> ประวัติความเป็นมา
                 </h3>
                 <p className="text-gray-600">
-                  ก่อตั้งขึ้นในปี 2023 โดยกลุ่มผู้เชี่ยวชาญด้านเทคโนโลยีที่มีความหลงใหลในการสร้างสรรค์ผลิตภัณฑ์ที่มีคุณภาพสูง เราเติบโตอย่างรวดเร็วและได้รับความไว้วางใจจากลูกค้าทั่วโลก
+                  ก่อตั้งขึ้นในปี {companyInfo.established} โดยกลุ่มผู้เชี่ยวชาญด้านเทคโนโลยีที่มีความหลงใหลในการสร้างสรรค์ผลิตภัณฑ์ที่มีคุณภาพสูง เราเติบโตอย่างรวดเร็วและได้รับความไว้วางใจจากลูกค้าทั่วโลก
                 </p>
               </div>
               
@@ -49,6 +78,54 @@ export default function About() {
                 </p>
               </div>
             </div>
+            
+            {/* แสดงข้อมูลบริษัท */}
+            <div className="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 rounded-xl shadow-md mb-12">
+              <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                <span className="text-orange-600 text-2xl mr-2">🏢</span> ข้อมูลบริษัท
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-700"><span className="font-medium">ชื่อบริษัท:</span> {companyInfo.name}</p>
+                  <p className="text-gray-700"><span className="font-medium">ที่ตั้ง:</span> {companyInfo.location}</p>
+                  <p className="text-gray-700"><span className="font-medium">จำนวนพนักงาน:</span> {companyInfo.employees} คน</p>
+                </div>
+                <div>
+                  <p className="text-gray-700"><span className="font-medium">อีเมล:</span> {companyInfo.contact.email}</p>
+                  <p className="text-gray-700"><span className="font-medium">โทรศัพท์:</span> {companyInfo.contact.phone}</p>
+                  <p className="text-gray-700"><span className="font-medium">ที่อยู่:</span> {companyInfo.contact.address}</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* แสดงทีมงาน */}
+            {teamMembers.length > 0 && (
+              <div className="mb-12">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">ทีมงานของเรา</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {teamMembers.map(member => (
+                    <div key={member.id} className="bg-white rounded-xl shadow-md p-4 text-center">
+                      <div className="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden bg-gray-200">
+                        {member.avatar ? (
+                          <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-500">
+                            <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <h4 className="text-lg font-bold text-gray-800">{member.name}</h4>
+                      <p className="text-gray-600">{member.position}</p>
+                      {member.bio && (
+                        <p className="text-gray-500 text-sm mt-2 line-clamp-3">{member.bio}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="flex justify-center">
@@ -59,6 +136,10 @@ export default function About() {
               กลับสู่หน้าหลัก
             </Link>
           </div>
+          
+          <p className="text-center text-gray-500 text-sm mt-6">
+            ข้อมูลอัปเดตล่าสุด: {lastUpdated}
+          </p>
         </div>
       </div>
     </MainLayout>

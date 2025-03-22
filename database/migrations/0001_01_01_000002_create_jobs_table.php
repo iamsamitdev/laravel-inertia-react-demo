@@ -13,34 +13,34 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->unsignedTinyInteger('attempts');
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+            $table->string('queue')->index()->comment('คิวของงาน');
+            $table->longText('payload')->comment('ข้อมูลของงาน');
+            $table->unsignedTinyInteger('attempts')->comment('จำนวนครั้งที่ลองทำงาน');
+            $table->unsignedInteger('reserved_at')->nullable()->comment('วันที่ทำงาน');
+            $table->unsignedInteger('available_at')->comment('วันที่พร้อมใช้งาน');
+            $table->unsignedInteger('created_at')->comment('วันที่สร้างงาน');
         });
 
         Schema::create('job_batches', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('name');
-            $table->integer('total_jobs');
-            $table->integer('pending_jobs');
-            $table->integer('failed_jobs');
-            $table->longText('failed_job_ids');
-            $table->mediumText('options')->nullable();
-            $table->integer('cancelled_at')->nullable();
-            $table->integer('created_at');
-            $table->integer('finished_at')->nullable();
+            $table->string('id')->primary()->comment('รหัสของการจัดงาน');
+            $table->string('name')->comment('ชื่อของการจัดงาน');
+            $table->integer('total_jobs')->comment('จำนวนงานทั้งหมด');
+            $table->integer('pending_jobs')->comment('จำนวนงานที่ยังไม่ได้ทำ');
+            $table->integer('failed_jobs')->comment('จำนวนงานที่ล้มเหลว');
+            $table->longText('failed_job_ids')->comment('รหัสของงานที่ล้มเหลว');
+            $table->mediumText('options')->nullable()->comment('ตัวเลือกของการจัดงาน');
+            $table->integer('cancelled_at')->nullable()->comment('วันที่ยกเลิกการจัดงาน');
+            $table->integer('created_at')->comment('วันที่สร้างการจัดงาน');
+            $table->integer('finished_at')->nullable()->comment('วันที่สำเร็จการจัดงาน');
         });
 
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
+            $table->string('uuid')->unique()->comment('รหัสของงาน');
+            $table->text('connection')->comment('การเชื่อมต่อกับฐานข้อมูล');
+            $table->text('queue')->comment('คิวของงาน');
+            $table->longText('payload')->comment('ข้อมูลของงาน');
+            $table->longText('exception')->comment('ข้อมูลของงาน');
             $table->timestamp('failed_at')->useCurrent();
         });
     }

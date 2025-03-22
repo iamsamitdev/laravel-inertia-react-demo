@@ -29,6 +29,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'position' => fake()->randomElement(['นักพัฒนา', 'นักออกแบบ', 'ผู้จัดการ', 'ที่ปรึกษา', 'ลูกค้า']),
+            'avatar' => 'https://randomuser.me/api/portraits/' . (fake()->boolean ? 'men' : 'women') . '/' . fake()->numberBetween(1, 70) . '.jpg',
+            'is_team' => fake()->boolean(20), // 20% โอกาสเป็นทีมงาน
+            'bio' => fake()->boolean(70) ? fake()->paragraphs(2, true) : null, // 70% โอกาสมีประวัติ
         ];
     }
 
