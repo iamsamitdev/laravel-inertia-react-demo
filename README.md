@@ -7,64 +7,6 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
 # Laravel Inertia React Application
 
 โปรเจ็กต์นี้สร้างด้วย Laravel, Inertia.js และ React ซึ่งเป็นเทคโนโลยีที่ทันสมัยและมีประสิทธิภาพสูง
@@ -125,16 +67,76 @@ php artisan serve
 
 ## โครงสร้างของโปรเจ็กต์
 
-- **Laravel Backend**
-  - Controllers อยู่ที่ `app/Http/Controllers`
-  - Models อยู่ที่ `app/Models`
-  - Migrations อยู่ที่ `database/migrations`
-  - Seeders อยู่ที่ `database/seeders`
+```
+laravel-inertia-react/
+├── app/
+│   ├── Console/
+│   │   └── Commands/               # คำสั่ง Artisan ที่สร้างขึ้นเอง
+│   │       └── ResetTestData.php
+│   ├── Http/
+│   │   ├── Controllers/            # Controller สำหรับจัดการ request
+│   │   │   ├── Auth/               # Controller สำหรับการยืนยันตัวตน
+│   │   │   │   ├── LoginController.php
+│   │   │   │   └── RegisterController.php
+│   │   │   └── PageController.php  # จัดการหน้าต่างๆ ของแอพ
+│   │   ├── Middleware/             # Middleware สำหรับจัดการ request
+│   │   │   └── HandleInertiaRequests.php  # จัดการข้อมูลที่ส่งให้ Inertia
+│   │   └── Resources/              # API Resources สำหรับแปลงข้อมูล
+│   └── Models/                     # โมเดลข้อมูล
+│       └── User.php                # โมเดลผู้ใช้
+├── database/
+│   ├── factories/                  # Factory สำหรับสร้างข้อมูลทดสอบ
+│   │   └── UserFactory.php
+│   ├── migrations/                 # ไฟล์กำหนดโครงสร้างฐานข้อมูล
+│   └── seeders/                    # ไฟล์สำหรับสร้างข้อมูลทดสอบ
+│       ├── DatabaseSeeder.php
+│       └── UserSeeder.php
+├── resources/
+│   ├── js/
+│   │   ├── components/             # React components ที่ใช้ซ้ำได้
+│   │   │   ├── Footer.tsx
+│   │   │   └── NavBar.tsx
+│   │   ├── layouts/                # React layouts สำหรับหน้าต่างๆ
+│   │   │   └── MainLayout.tsx
+│   │   ├── pages/                  # React components สำหรับแต่ละหน้า
+│   │   │   ├── Auth/               # หน้าเกี่ยวกับการยืนยันตัวตน
+│   │   │   │   ├── Login.tsx
+│   │   │   │   └── Register.tsx
+│   │   │   ├── about.tsx
+│   │   │   ├── dashboard.tsx
+│   │   │   └── welcome.tsx
+│   │   └── types/                  # TypeScript type definitions
+│   │       └── index.d.ts
+│   └── views/                      # Blade templates
+└── routes/                         # เส้นทาง URL ของแอพ
+    └── web.php                     # กำหนด routes หลักของแอพ
+```
 
-- **React Frontend (Inertia.js)**
-  - Components อยู่ที่ `resources/js/components`
-  - Layouts อยู่ที่ `resources/js/layouts`
-  - Pages อยู่ที่ `resources/js/pages`
+### Laravel Backend
+
+โปรเจ็กต์นี้แบ่งส่วนหลังบ้านตามแนวทางของ Laravel ดังนี้:
+
+- **Controllers**: จัดการ HTTP requests และส่งข้อมูลไปยัง React ผ่าน Inertia
+  - `PageController`: จัดการหน้าหลักของแอปพลิเคชัน (welcome, about, dashboard)
+  - `Auth/*`: จัดการการลงทะเบียนและเข้าสู่ระบบ
+
+- **Middleware**: จัดการการประมวลผล requests ก่อนถึง controller
+  - `HandleInertiaRequests`: กำหนดข้อมูลที่แชร์ไปยังทุกหน้าผ่าน Inertia
+
+- **Models**: กำหนดโครงสร้างข้อมูลและความสัมพันธ์
+  - `User`: โมเดลผู้ใช้งานที่รวมฟิลด์เพิ่มเติมเช่น `position`, `avatar`, `is_team`, `bio`
+
+- **Commands**: คำสั่ง Artisan ที่สร้างขึ้นเอง
+  - `ResetTestData`: รีเซ็ตและสร้างข้อมูลทดสอบใหม่
+
+### React Frontend (Inertia.js)
+
+React components ถูกจัดเก็บในโฟลเดอร์ `resources/js/` และแบ่งออกเป็น:
+
+- **Components**: ส่วนประกอบย่อยที่ใช้ซ้ำได้เช่น `NavBar`, `Footer`
+- **Layouts**: โครงสร้างหน้าที่ใช้ซ้ำเช่น `MainLayout`
+- **Pages**: หน้าหลักของแอปพลิเคชันเช่น `welcome`, `about`, `dashboard`
+- **Types**: นิยาม TypeScript types เช่น `User`, `PageProps`
 
 ## การใช้งาน API Resources
 
@@ -178,3 +180,11 @@ export default function About({ companyInfo, teamMembers, lastUpdated }: AboutPr
   // ใช้งานข้อมูลตามที่ต้องการ
 }
 ```
+
+## เทคโนโลยีที่ใช้
+
+- **Laravel 10+**: PHP Framework สำหรับพัฒนา Backend API 
+- **React 18**: JavaScript Library สำหรับพัฒนา UI
+- **TypeScript**: Superset ของ JavaScript ที่เพิ่มระบบ Type
+- **Inertia.js**: ตัวเชื่อมระหว่าง Laravel และ React
+- **Tailwind CSS**: Framework CSS สำหรับออกแบบ UI
